@@ -9,6 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "utils-merge": "^1.0.0"
+    "eventemitter2": "^3.0.0",
+    "utils-merge": "^1.0.0",
+    "xml2js": "^0.4.17"
   }
 }
