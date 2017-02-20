@@ -1,16 +1,35 @@
 {
   "name": "thelightingcontrollerclient",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Node.js client library for communicating with The Lighting Controller software products (ShowXpress, QuickDmx, and SweetLight)",
+  "keywords": [
+    "lighting",
+    "showxpress",
+    "quickdmx",
+    "sweetlight",
+    "dmxcontroll",
+    "thelightingcontroller",
+    "lightboard",
+    "theater",
+    "dj"
+  ],
+  "main": "./index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/jasmine/bin/jasmine.js"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Aaron Tidwell <aaron.tidwell@gmail.com>",
+  "license": "MIT",
+  "repository": "git://github.com/Tidwell/thelightingcontrollerclient.git",
   "dependencies": {
     "eventemitter2": "^3.0.0",
     "utils-merge": "^1.0.0",
     "xml2js": "^0.4.17"
+  },
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "devDependencies": {
+    "jasmine": "^2.5.3",
+    "mockery": "^2.0.0"
   }
 }

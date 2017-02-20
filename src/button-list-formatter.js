@@ -17,7 +17,6 @@ function formatButtonListObject(rawButtonList) {
             col++;
         }
         page.button.forEach((button) => {
-            console.log(button)
             pageObject.buttons.push({
                 name: button['_'],
                 index: Number(button.$.index),

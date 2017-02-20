@@ -1,4 +1,4 @@
-#TheLightingControllerClient
+#thelightingcontrollerclient
 --
 
 A node.js client library for communicating with The Lighting Controller software products (ShowXpress, QuickDmx, and SweetLight).  This library is not created, supported, or endorsed by Chauvet, Showtec, SweetLight, or The Lighting Controller.
