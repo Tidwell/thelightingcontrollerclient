@@ -27,7 +27,7 @@ myCtrl.on('connected', () => {
 });
 ```
 
-The client is an instance of [EventEmitter2](https://github.com/asyncly/EventEmitter2). You can use onAny to subscribe to all events and click around in Live to see what is sent to the client.
+The client is an instance of [EventEmitter2](https://github.com/asyncly/EventEmitter2). You can use onAny to subscribe to all events and click around in Live to see what is sent to the client.  This also allows for usage of methods like .once, .many, .removeAllListeners, and all other EventEmitter2 methods.  See the EventEmitter2 docs for a list of methods for interacting with the EventEmitter.
 
 ```js
 myCtrl.onAny((event, value) => {
@@ -41,12 +41,13 @@ myCtrl.onAny((event, value) => {
 When creating an instance of the client, you should pass a configuration object.  The following defaults have been configured, you should pass any properties that you need to overwrite.
 
 ```js
-{
+const LightingController = require('thelightingcontrollerclient');
+const myCtrl = new LightingController({
 	port: 7348,
 	ip: '127.0.0.1',
 	extApp: 'thelightingcontrollerclient',
 	password: ''
-}
+});
 ```
 
 
