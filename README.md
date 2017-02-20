@@ -6,6 +6,27 @@ A node.js client library for communicating with The Lighting Controller software
 This was created using The Lighting Controller's publicly documented [Protocol Definition](http://download.thelightingcontroller.com/software/External_Application/Protocol.pdf).
 
 
+# Table of Contents
+1. [Install](#install)
+2. [Example](#example)
+3. [Instantiation](#instantiation)
+4. [Events](#events)
+	[connected](#connected)
+	[disconnected](#disconnected)
+	[error](#error)
+	[beatOn](#beatOn)
+	[beatOff](#beatOff)
+	[bpm](#bpm)
+	[buttonList](#buttonList)
+	[buttonPress](#buttonPress)
+	[buttonRelease](#buttonRelease)
+	[faderchange](#faderChange)
+	[interfaceChange](#interfaceChange)
+	[unknownEvent](#unknownEvent)
+5. [Known Live Bugs](#bugs-in-the-live-software)
+6. [Unknown Features](#unknown-features)
+
+
 ##Install
 ``$ npm install thelightingcontrollerclient``
 
@@ -92,24 +113,6 @@ The client has encoutered an error.
 ```
 
 
-###unknownEvent
-The client encountered a socketMessage it was unable to parse.  Could potentially occur if Live is upated and the client library has yet to be updated to support new events.  Allows for parsing the message manually.
-
-```js
-	myCtrl.on('unknownEvent', (socketMessage) => {
-	});
-```
-
-
-###bpm
-The client recieved a request for the current BPM.  Use .bpm(Number) to respond.
-
-```js
-	myCtrl.on('bpm', () => {
-	});
-```
-
-
 ###beatOn
 The client recieved a signal that it can start sending real time beats for live to use in BPM calculations. Use .beat() to respond.  *Note* The AutoBPM feature of the Live software only works on a PC.
 
@@ -124,6 +127,15 @@ The client recieved a signal that it should stop sending real time beats.  *Note
 
 ```js
  	myCtrl.on('beatOff', () => {
+	});
+```
+
+
+###bpm
+The client recieved a request for the current BPM.  Use .bpm(Number) to respond.
+
+```js
+	myCtrl.on('bpm', () => {
 	});
 ```
 
@@ -219,6 +231,16 @@ The interface has changed in the Live software - generally a hint to call .butto
 
 ```js
  	myCtrl.on('interfaceChange', () => {
+	});
+```
+
+
+###unknownEvent
+The client encountered a socketMessage it was unable to parse.  Could potentially occur if Live is upated and the client library has yet to be updated to support new events.  Allows for parsing the message manually.
+
+```js
+	myCtrl.on('unknownEvent', (socketMessage) => {
+		//the raw socket message.  See the Protocol Definition for parsing information.
 	});
 ```
 
