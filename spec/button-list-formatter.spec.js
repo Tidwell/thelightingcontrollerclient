@@ -65,6 +65,72 @@ describe('ButtonListFormatter', () => {
 		});
 	});
 
+	it('should do nothing if buttons are missing $ properties', () => {
+		expect(format({
+			buttons: {
+				page: [{
+					$: {
+						name: 'test',
+						columns: 2,
+						colbuttons_1: 2,
+						colbuttons_2: 4
+					},
+					button: [{}]
+				}]
+			}
+		})).toEqual({
+			pages: [{
+				name: 'test',
+				columns: 2,
+				columnButtons: {
+					1: 2,
+					2: 4
+				},
+				buttons: []
+			}],
+			faders: []
+		});
+	});
+
+	it('should not fail if a button is missing a name', () => {
+		expect(format({
+			buttons: {
+				page: [{
+					$: {
+						name: 'test',
+						columns: 2,
+						colbuttons_1: 2,
+						colbuttons_2: 4
+					},
+					button: [{
+						$: {}
+					}]
+				}]
+			}
+		})).toEqual({
+			pages: [{
+				name: 'test',
+				columns: 2,
+				columnButtons: {
+					1: 2,
+					2: 4
+				},
+				buttons: [{
+					name: '',
+					index: NaN,
+					flash: false,
+					pressed: false,
+					line: NaN,
+					column: NaN,
+					color: undefined
+				}]
+			}],
+			faders: []
+		});
+	});
+
+
+
 	it('should set the buttons', () => {
 		expect(format({
 			buttons: {

@@ -57,6 +57,27 @@ describe("TheLightingControllerClient", () => {
 			expect(typeof client.client.connectCalled[2]).toBe('function');
 			expect(client._hello).toHaveBeenCalled();
 		});
+
+		it('should call _onSocketData when client on(data) is fired', () => {
+			spyOn(client, '_onSocketData');
+			client.connect();
+			client.client.onMethods.data();
+			expect(client._onSocketData).toHaveBeenCalled();
+		});
+
+		it('should call _onSocketClose when client on(close) is fired', () => {
+			spyOn(client, '_onSocketClose');
+			client.connect();
+			client.client.onMethods.close();
+			expect(client._onSocketClose).toHaveBeenCalled();
+		});
+
+		it('should call _onSocketError when client on(error) is fired', () => {
+			spyOn(client, '_onSocketError');
+			client.connect();
+			client.client.onMethods.error();
+			expect(client._onSocketError).toHaveBeenCalled();
+		});
 	});
 
 	describe('_onSocketData method', () => {
