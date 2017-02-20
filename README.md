@@ -41,6 +41,7 @@ This was created using The Lighting Controller's publicly documented [Protocol D
 
 
 # Install
+
 ``$ npm install thelightingcontrollerclient``
 
 
@@ -428,7 +429,6 @@ If you need to see how the offical [Live Mobile Apps](http://www.thelightingcont
 
 # Bugs in the Live Software
 
-
 A bug report has been opened for these issues with TheLightingController, but until they are fixed in the software, you may encounter these issues:
 
 - Adjusting a fader on a client app does not re-broadcast a FADER_CHANGE event (it does broadcast if a fader changes using Live)
@@ -450,7 +450,6 @@ A bug report has been opened for these issues with TheLightingController, but un
 
 
 # Unknown Features
----
 
 I need to test these on a PC (where AutoBPM works)
 
