@@ -48,117 +48,118 @@ myCtrl.onAny((event, value) => {
 ```
 
 ###error
- 	```js
- 		myCtrl.on('error', (errorObject) => {
-			//the client has encoutered an error
-		});
- 	```
+```js
+	myCtrl.on('error', (errorObject) => {
+		//the client has encoutered an error
+	});
+```
 
- 	errorObject will be an object containing:
- 	```js
- 	{
- 		type: String, // one of: 'BAD PASSWORD', 'SOCKET', 'BUTTON LIST XML PARSE FAILED', 'UNKNOWN ERROR'
- 		error: Object, // the original error object thrown by whatever encountered the error, not all errors have this property
- 		data: Mixed // the data that was being processed when the error occured, not all errors have this property
- 	}
- 	```
+errorObject will be an object containing:
+
+```js
+	{
+		type: String, // one of: 'BAD PASSWORD', 'SOCKET', 'BUTTON LIST XML PARSE FAILED', 'UNKNOWN ERROR'
+		error: Object, // the original error object thrown by whatever encountered the error, not all errors have this property
+		data: Mixed // the data that was being processed when the error occured, not all errors have this property
+	}
+```
 
 ###unknownEvent
- 	```js
- 		myCtrl.on('unknownEvent', (socketMessage) => {
-			//the client encountered a socketMessage it was unable to parse.  Could potentially occur if Live is upated
-			//and the client library has yet to be updated to support new events.  Allows for parsing the message manually
-		});
- 	```
+```js
+	myCtrl.on('unknownEvent', (socketMessage) => {
+		//the client encountered a socketMessage it was unable to parse.  Could potentially occur if Live is upated
+		//and the client library has yet to be updated to support new events.  Allows for parsing the message manually
+	});
+```
 
 ###bpm
- 	```js
- 	myCtrl.on('bpm', () => {
+```js
+	myCtrl.on('bpm', () => {
 		//the client recieved a request for the current BPM.  Use .bpm(Number) to respond.
 	});
-	```
+```
 
 ###beatOn
- 	```js
- 	myCtrl.on('beatOn', () => {
+```js
+	myCtrl.on('beatOn', () => {
 		//the client recieved a signal that it can start sending real time beats for live to use in BPM calculations. Use .beat() to respond.  *Note* The AutoBPM feature of the Live software only works on a PC
 	});
-	```
+```
 
 ###beatOff
- 	```js
+```js
  	myCtrl.on('beatOff', () => {
 		//the client recieved a signal that it should stop sending real time beats.  *Note* The AutoBPM feature of the Live software only works on a PC
 	});
-	```
+```
 
 ###buttonList
- 	```js
- 		myCtrl.on('buttonList', (buttonListObject) => {
-			//the client recieved a response to calling .buttonList() containing the Live button and master faders list
+```js
+	myCtrl.on('buttonList', (buttonListObject) => {
+		//the client recieved a response to calling .buttonList() containing the Live button and master faders list
 
-			//example buttonListObject:
+		//example buttonListObject:
 
-			{
-			   	pages: [
-			        {
-			            name: String
-			            columns: Number
-			            columnButtons: {
-							1: Number,
-							2: Number,
-							.
-							.
-							.
+		{
+		   	pages: [
+		        {
+		            name: String
+		            columns: Number
+		            columnButtons: {
+						1: Number,
+						2: Number,
+						.
+						.
+						.
+		            },
+		            buttons [
+		            	{
+			            	name: String,
+			            	index: Number,
+			            	flash: Boolean,
+			            	pressed: Boolean,
+			            	line: Number,
+			            	column: Number,
+			            	color: String (hex ex #000000)
 			            },
-			            buttons [
-			            	{
-				            	name: String,
-				            	index: Number,
-				            	flash: Boolean,
-				            	pressed: Boolean,
-				            	line: Number,
-				            	column: Number,
-				            	color: String (hex ex #000000)
-				            },
-				            .
-				            .
-				            .
-				        ]
-			        },
-			        .
-			        .
-			        .
-			    ],
-				faders: [
-					{
-			            name: String,
-			            value: Boolean
-			        },
-			        .
-			        .
-			        .
-			    ]
-			}
-		});
- 	```
+			            .
+			            .
+			            .
+			        ]
+		        },
+		        .
+		        .
+		        .
+		    ],
+			faders: [
+				{
+		            name: String,
+		            value: Boolean
+		        },
+		        .
+		        .
+		        .
+		    ]
+		}
+	});
+```
 
 ###buttonPress
- 	```js
+```js
  	myCtrl.on('buttonPress', (buttonName) => {
 		//String buttonName The name of the button that was pressed
 	});
-	```
+```
 
 ###buttonRelease
- 	```js
+```js
  	myCtrl.on('buttonPress', (buttonName) => {
 		//String buttonName The name of the button that was released
 	});
-	```
+```
 
 ###faderChange
- 	```js
+```js
  	myCtrl.on('faderChange', (faderObject) => {
 		//A fader was moved in value.
 
@@ -168,14 +169,14 @@ myCtrl.onAny((event, value) => {
 			value: Number
 		}
 	});
-	```
+```
 		
 ###interfaceChange
- 	```js
+```js
  	myCtrl.on('interfaceChange', () => {
 		//The interface has changed in the Live software - generally a hint to call .buttonList()
 	});
-	```
+```
 
 
 ##Bugs in the Live Software
