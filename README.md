@@ -383,15 +383,21 @@ The client encountered a socketMessage it was unable to parse.  Could potentiall
 ---
 Clone the repo
 
-``git clone https://github.com/Tidwell/thelightingcontrollerclient.git``
+``bash
+	$ git clone https://github.com/Tidwell/thelightingcontrollerclient.git
+``
 
 Run tests
 
-``npm test``
+``bash
+	$ npm test
+``
 
 Run coverage report
 
-``npm run-script coverage``
+``bash
+	$ npm run-script coverage
+``
 
 
 ##Bugs in the Live Software
