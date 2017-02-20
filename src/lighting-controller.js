@@ -191,6 +191,13 @@ class LightingController extends EventEmitter2 {
 	 * This assigns the new BPM value in the “manual BPM” section of Live.
 	 */
 	bpm(bpm) {
+		const num = Number(bpm);
+		if (isNaN(num) || num < 0) {
+			return this._onError({
+				type: 'CLIENT ERROR',
+				error: 'invalid bpm value'
+			});
+		}
 		this._sendSocketMessage('BPM' + SEPARATOR + bpm);
 	}
 
@@ -233,6 +240,12 @@ class LightingController extends EventEmitter2 {
 	 * 
 	 */
 	cue(cueName) {
+		if (!cueName) {
+			return this._onError({
+				type: 'CLIENT ERROR',
+				error: 'invalid cue name'
+			});
+		}
 		this._sendSocketMessage('CUE' + SEPARATOR + cueName);
 	}
 
@@ -251,6 +264,12 @@ class LightingController extends EventEmitter2 {
 	 * This presses the button with the name {button_name} in Live.
 	 */
 	buttonPress(buttonName) {
+		if (!buttonName) {
+			return this._onError({
+				type: 'CLIENT ERROR',
+				error: 'invalid button name'
+			});
+		}
 		this._sendSocketMessage('BUTTON_PRESS' + SEPARATOR + buttonName);
 	}
 
@@ -261,6 +280,12 @@ class LightingController extends EventEmitter2 {
 	 * This releases the button with the name {button_name} in Live.
 	 */
 	buttonRelease(buttonName) {
+		if (!buttonName) {
+			return this._onError({
+				type: 'CLIENT ERROR',
+				error: 'invalid button name'
+			});
+		}
 		this._sendSocketMessage('BUTTON_RELEASE' + SEPARATOR + buttonName);
 	}
 
@@ -271,8 +296,21 @@ class LightingController extends EventEmitter2 {
 	 * external application.
 	 * This changes the position of the master fader in Live
 	 */
-	faderChange(fader, position) {
-		this._sendSocketMessage('FADER_CHANGE' + SEPARATOR + fader + SEPARATOR + position);
+	faderChange(faderName, position) {
+		if (!faderName) {
+			return this._onError({
+				type: 'CLIENT ERROR',
+				error: 'invalid fader name'
+			});
+		}
+		position = Number(position);
+		if (isNaN(position) || position > 100 || position < -100) {
+			return this._onError({
+				type: 'CLIENT ERROR',
+				error: 'invalid fader value'
+			});
+		}
+		this._sendSocketMessage('FADER_CHANGE' + SEPARATOR + faderName + SEPARATOR + position);
 	}
 
 	/**

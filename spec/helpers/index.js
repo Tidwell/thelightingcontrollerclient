@@ -28,4 +28,5 @@ const netMock = {
 		}
 	}
 };
+
 mockery.registerMock('net', netMock);

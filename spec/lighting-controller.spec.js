@@ -326,17 +326,279 @@ describe("TheLightingControllerClient", () => {
 	});
 
 	describe('_onError', () => {
+		it('should emit an error event with the data passed', () => {
+			const errObj = {
+				type: 'SOMETYPE',
+				error: 'wat'
+			};
+			let eventFired = false;
+			let data = null;
+			client.on('error', (d) => {
+				data = d;
+				eventFired = true;
+			});
+			client._onError(errObj);
+			expect(eventFired).toBe(true);
+			expect(data).toBe(errObj);
+		});
 
+		it('should set the type to UNKNOWN ERROR if one was not passed', () => {
+			const errObj = {
+				error: 'wat'
+			};
+			let eventFired = false;
+			let data = null;
+			client.on('error', (d) => {
+				data = d;
+				eventFired = true;
+			});
+			client._onError(errObj);
+			expect(eventFired).toBe(true);
+			expect(data.type).toEqual('UNKNOWN ERROR');
+		});
 	});
 
 	describe('_onButtonList', () => {
+		it('should fire a buttonList event', () => {
+			let eventFired = false;
+			let data = null;
+			client.on('buttonList', (d) => {
+				data = d;
+				eventFired = true;
+			});
+			client._onButtonList('<?xml version="1.0" encoding="UTF-8"?><buttons></buttons>');
+			expect(eventFired).toBe(true);
+			expect(data).toEqual({ pages: [  ], faders: [  ] });
+		});
 
+		it('should fire an error if it fails to parse the xml', () => {
+			let eventFired = false;
+			let data = null;
+			client.on('error', (d) => {
+				data = d;
+				eventFired = true;
+			});
+			client._onButtonList('not valid xml');
+			expect(eventFired).toBe(true);
+			expect(data.type).toEqual('BUTTON LIST XML PARSE FAILED');
+			expect(data.data).toEqual('not valid xml');
+			expect(data.error instanceof Error).toBe(true);
+		});
 	});
 
-	describe('_hello', () => {
+	describe('event firing methods', () => {
+		let messageToSend;
+		beforeEach(() => {
+			messageToSend = null;
+			spyOn(client, '_sendSocketMessage').and.callFake((msg) => {
+				messageToSend = msg;
+			});
+		});
 
+		describe('_hello', () => {
+			it('should fire a hello message with the app name and password', () => {
+				client.settings.extApp = 'someapp';
+				client.settings.password = 'somepass';
+				client._hello();
+				expect(messageToSend).toBe('HELLO|someapp|somepass');
+			});
+		});
+
+		describe('bpm', () => {
+			it('should fire a bpm message', () => {
+				client.bpm(20);
+				expect(messageToSend).toBe('BPM|20');
+			});
+			it('should fire an error if passed an invalid bpm', () => {
+				let eventFired = false;
+				let data = null;
+				client.on('error', (d) => {
+					data = d;
+					eventFired = true;
+				});
+				client.bpm();
+				expect(eventFired).toBe(true);
+				expect(data.type).toEqual('CLIENT ERROR');
+				expect(data.error).toEqual('invalid bpm value');
+			});
+		});
+
+		describe('beat', () => {
+			it('should fire a BEAT message', () => {
+				client.beat();
+				expect(messageToSend).toBe('BEAT');
+			});
+		});
+
+		describe('freeze', () => {
+			it('should fire FREEZE_ON a message', () => {
+				client.freeze();
+				expect(messageToSend).toBe('FREEZE_ON');
+			});
+		});
+
+		describe('unfreeze', () => {
+			it('should fire a FREEZE_OFF message', () => {
+				client.unfreeze();
+				expect(messageToSend).toBe('FREEZE_OFF');
+			});
+		});
+
+		describe('autoBpmOn', () => {
+			it('should fire a AUTO_BPM_ON message', () => {
+				client.autoBpmOn();
+				expect(messageToSend).toBe('AUTO_BPM_ON');
+			});
+		});
+
+		describe('autoBpmOff', () => {
+			it('should fire a AUTO_BPM_OFF message', () => {
+				client.autoBpmOff();
+				expect(messageToSend).toBe('AUTO_BPM_OFF');
+			});
+		});
+
+		describe('cue', () => {
+			it('should fire a cue message', () => {
+				client.cue('my cue');
+				expect(messageToSend).toBe('CUE|my cue');
+			});
+			it('should fire an error if passed an invalid name', () => {
+				let eventFired = false;
+				let data = null;
+				client.on('error', (d) => {
+					data = d;
+					eventFired = true;
+				});
+				client.cue();
+				expect(eventFired).toBe(true);
+				expect(data.type).toEqual('CLIENT ERROR');
+				expect(data.error).toEqual('invalid cue name');
+			});
+		});
+
+		describe('buttonToggle', () => {
+			it('should fire a cue message', () => {
+				client.buttonToggle('my cue');
+				expect(messageToSend).toBe('CUE|my cue');
+			});
+			it('should fire an error if passed an invalid name', () => {
+				let eventFired = false;
+				let data = null;
+				client.on('error', (d) => {
+					data = d;
+					eventFired = true;
+				});
+				client.buttonToggle();
+				expect(eventFired).toBe(true);
+				expect(data.type).toEqual('CLIENT ERROR');
+				expect(data.error).toEqual('invalid cue name');
+			});
+		});
+
+		describe('buttonPress', () => {
+			it('should fire a cue message', () => {
+				client.buttonPress('my button');
+				expect(messageToSend).toBe('BUTTON_PRESS|my button');
+			});
+			it('should fire an error if passed an invalid name', () => {
+				let eventFired = false;
+				let data = null;
+				client.on('error', (d) => {
+					data = d;
+					eventFired = true;
+				});
+				client.buttonPress();
+				expect(eventFired).toBe(true);
+				expect(data.type).toEqual('CLIENT ERROR');
+				expect(data.error).toEqual('invalid button name');
+			});
+		});
+
+		describe('buttonRelease', () => {
+			it('should fire a cue message', () => {
+				client.buttonRelease('my button');
+				expect(messageToSend).toBe('BUTTON_RELEASE|my button');
+			});
+			it('should fire an error if passed an invalid name', () => {
+				let eventFired = false;
+				let data = null;
+				client.on('error', (d) => {
+					data = d;
+					eventFired = true;
+				});
+				client.buttonRelease();
+				expect(eventFired).toBe(true);
+				expect(data.type).toEqual('CLIENT ERROR');
+				expect(data.error).toEqual('invalid button name');
+			});
+		});
+
+		describe('faderChange', () => {
+			it('should fire a fader message', () => {
+				client.faderChange('my fader', 50);
+				expect(messageToSend).toBe('FADER_CHANGE|my fader|50');
+			});
+			it('should fire even if the value is 0', () => {
+				client.faderChange('my fader', 0);
+				expect(messageToSend).toBe('FADER_CHANGE|my fader|0');
+			});
+			it('should fire an error if passed an invalid name', () => {
+				let eventFired = false;
+				let data = null;
+				client.on('error', (d) => {
+					data = d;
+					eventFired = true;
+				});
+				client.faderChange();
+				expect(eventFired).toBe(true);
+				expect(data.type).toEqual('CLIENT ERROR');
+				expect(data.error).toEqual('invalid fader name');
+			});
+			it('should fire an error if passed an invalid value', () => {
+				let eventFired = false;
+				let data = null;
+				client.on('error', (d) => {
+					data = d;
+					eventFired = true;
+				});
+				client.faderChange('my fader');
+				expect(eventFired).toBe(true);
+				expect(data.type).toEqual('CLIENT ERROR');
+				expect(data.error).toEqual('invalid fader value');
+			});
+			it('should fire an error if passed a value under -100', () => {
+				let eventFired = false;
+				let data = null;
+				client.on('error', (d) => {
+					data = d;
+					eventFired = true;
+				});
+				client.faderChange('my fader', -101);
+				expect(eventFired).toBe(true);
+				expect(data.type).toEqual('CLIENT ERROR');
+				expect(data.error).toEqual('invalid fader value');
+			});
+			it('should fire an error if passed a value over 100', () => {
+				let eventFired = false;
+				let data = null;
+				client.on('error', (d) => {
+					data = d;
+					eventFired = true;
+				});
+				client.faderChange('my fader', 101);
+				expect(eventFired).toBe(true);
+				expect(data.type).toEqual('CLIENT ERROR');
+				expect(data.error).toEqual('invalid fader value');
+			});
+		});
+
+		describe('buttonList', () => {
+			it('should fire a BUTTON_LIST message', () => {
+				client.buttonList();
+				expect(messageToSend).toBe('BUTTON_LIST');
+			});
+		});
 	});
-
-	//ADD ALL OTHER SENDING METHODS
 
 });

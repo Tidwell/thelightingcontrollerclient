@@ -34,7 +34,7 @@ This was created using The Lighting Controller's publicly documented [Protocol D
  - [buttonList](#buttonlist)
  - [buttonPress](#buttonpress)
  - [buttonRelease](#buttonRelease)
- - [faderchange](#faderchange)
+ - [faderChange](#faderchange)
  - [interfaceChange](#interfacechange)
  - [unknownEvent](#unknownevent)
 6. [Known Live Bugs](#bugs-in-the-live-software)
@@ -222,13 +222,24 @@ The client has disconnected from Live.
 ###error
 The client has encoutered an error.
 
+All errorObjects will have a `type`, one of:
+- **BAD PASSWORD** - Response from Live that the password for Live was invalid
+- **SOCKET** - The client was unable to establish a connection to Live
+- **BUTTON LIST XML PARSE FAILED** - The client recieved an xml response from Live that it was unable to parse
+- **UNKNOWN ERROR** - The client threw an error but was unable to determine the type.  Check the other properties of the error object to determine what went wrong.
+- **CLIENT ERROR** - Data passed to a method was invalid and was not sent to Live.  The ``error`` proprty will contain a human-readable definition of the error.
+
+errorObjects may also contain an `error` property. This is the original error object thrown by whatever encountered the error.  Not all errors have this property
+
+errorObjects may also contain a `data` property. This is the data that was being processed when the error occured.  Not all errors have this property.
+
 ```js
 	client.on('error', (errorObject) => {
-		//errorObject will be an object containing:
+		//example errorObject for calling client.bpm(-100);
 		{
-			type: String, // one of: 'BAD PASSWORD', 'SOCKET', 'BUTTON LIST XML PARSE FAILED', 'UNKNOWN ERROR'
-			error: Object, // the original error object thrown by whatever encountered the error, not all errors have this property
-			data: Mixed // the data that was being processed when the error occured, not all errors have this property
+			type: 'CLIENT ERROR',
+			error: 'invalid bpm value',
+			data: -100
 		}
 	
 	});
