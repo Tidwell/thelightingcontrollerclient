@@ -15,6 +15,5 @@ Bugs
 - AutoBPM toggle event is not broadcast or re-broadcast.  (sending AUTO_BPM_ON or AUTO_BPM_OFF from a client app does not send an event to other client apps AND toggling AUTOBPM in Live does not send an event to client apps)
 
 
-- Sending BEAT event doesn nothing? (mac only??)
-- What is a CUE event
-- Have not seen a BPM or BEAT_OFF message (mac only??)
+- Sending BEAT event does nothing? (windows only??)
+- Have not seen a BPM or BEAT_OFF message (windows only??)

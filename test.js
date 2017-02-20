@@ -9,7 +9,12 @@ myCtrl.onAny((event, value) => {
 });
 myCtrl.on('connected', function() {
 	console.log('connected')
-	myCtrl.buttonList();
+	myCtrl.cue('lasers');
+
+	setTimeout(function() {
+		myCtrl.cue('lasers')
+	},5000);
+	//myCtrl.buttonList();
 	// 
 	
 	//myCtrl.bpm(400);
@@ -25,11 +30,11 @@ myCtrl.on('connected', function() {
 // });
 myCtrl.on('buttonList', function(btns){
 	console.log('buttonList')
-	//console.log(JSON.stringify(btns, null, 4));
-	myCtrl.freeze();
-	setTimeout(function() {
-		myCtrl.unfreeze();
-	},5000)
+	console.log(JSON.stringify(btns, null, 4));
+	// myCtrl.freeze();
+	// setTimeout(function() {
+	// 	myCtrl.unfreeze();
+	// },5000)
 });
 
 

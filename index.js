@@ -241,9 +241,22 @@ class LightingControllerEmitter extends EventEmitter2 {
 	 *
 	 * "CUE|{cue_name}" : Sent at each meeting of a cue point in the external application.
 	 * This toggles the button with the name {cue_name} in Live.
+	 *
+	 * note: This just toggles whatever button name is passed to it.  TLC software will
+	 * still fire buttonPress/buttonRelease events to the client when this is used.  Also
+	 * aliased as the (more accurate) buttonToggle.  This name is just to match the official docs.
+	 * 
 	 */
 	cue(cueName) {
 		this.sendSocketMessage('CUE' + SEPARATOR + cueName);
+	}
+
+	/**
+	 * @method buttonToggle
+	 * @aliasOf cue
+	 */
+	buttonToggle(buttonName) {
+		this.cue(buttonName);
 	}
 
 	/**
