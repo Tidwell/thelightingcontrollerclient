@@ -36,12 +36,24 @@ myCtrl.onAny((event, value) => {
 ```
 
 
-##Events
+##Instantiation
 
+When creating an instance of the client, you should pass a configuration object.  The following defaults have been configured, you should pass any properties that you need to overwrite.
+
+```js
+{
+	port: 7348,
+	ip: '127.0.0.1',
+	extApp: 'thelightingcontrollerclient',
+	password: ''
+}
+```
+
+
+##Events
 
 ###connected
 The client has connected and successfully authenticated with Live.
-
  
 ```js
  	myCtrl.on('connected', () => {
