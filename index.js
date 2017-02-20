@@ -6,27 +6,11 @@ const EventEmitter2 = require('eventemitter2').EventEmitter2;
 const merge = require('utils-merge');
 const xmlStringParser = require('xml2js').parseString;
 
+const buttonListFormatter = require('./src/button-list-formatter');
+
+
 /**
  * LightingController
- *
- * emits:
- * 	- connected
- * 	- disconnected
- *  - error
- *  	'BAD PASSWORD'
- *  	'SOCKET'
- *  	'BUTTON LIST XML PARSE FAILED'
- *  	'UNKNOWN ERROR'
- *  - unknownEvent
- *  
- *  - bpm
- *  - beatOn
- *  - beatOff
- *  - buttonList
- *  - buttonPress
- *  - buttonRelease
- *  - faderChange
- *  - interfaceChange
  */
 class LightingControllerEmitter extends EventEmitter2 {
 	constructor(args) {
@@ -44,46 +28,46 @@ class LightingControllerEmitter extends EventEmitter2 {
 	connect() {
 		this.client = new net.Socket();
 		this.client.setEncoding('utf8');
-		this.client.on('data', data => this.onSocketData(data));
-		this.client.connect(this.settings.port, this.settings.ip, () => this.hello());
-		this.client.on('close', () => this.onSocketClose());
-		this.client.on('error', error => this.onSocketError(error));
+		this.client.on('data', data => this._onSocketData(data));
+		this.client.connect(this.settings.port, this.settings.ip, () => this._hello());
+		this.client.on('close', () => this._onSocketClose());
+		this.client.on('error', error => this._onSocketError(error));
 	}
 
-	onSocketData(data) {
+	_onSocketData(data) {
 		this.bufferedData += data;
-		this.checkParse();
+		this._checkParse();
 	}
 
-	onSocketClose() {
+	_onSocketClose() {
 		this.connected = false;
 		this.emit('disconnected');
 	}
 
-	onSocketError(error) {
+	_onSocketError(error) {
 		this.emit('error', {
 			type: 'SOCKET',
 			error: error
 		})
 	}
 
-	sendSocketMessage(message) {
+	_sendSocketMessage(message) {
 		this.client.write(message + CRLF);
 	}
 
-	checkParse() {
+	_checkParse() {
 		const lineEnd = this.bufferedData.indexOf(CRLF);
 		if (lineEnd > -1) {
-			this.extractLine(lineEnd);
+			this._extractLine(lineEnd);
 			//check again if we had a line to parse
-			this.checkParse();
+			this._checkParse();
 		}
 	}
 
-	extractLine(lineEnd) {
+	_extractLine(lineEnd) {
 		const line = this.bufferedData.substring(0, lineEnd);
 		this.bufferedData = this.bufferedData.slice(lineEnd + CRLF.length);
-		this.parseLine(line);
+		this._parseLine(line);
 	}
 
 	/**
@@ -113,7 +97,7 @@ class LightingControllerEmitter extends EventEmitter2 {
 	 *	delete, button rename, nb of master faders,, and so on …).
 	 *	(use if you need)
 	 */
-	parseLine(line) {
+	_parseLine(line) {
 		let cmd = line;
 		let data;
 		if (line.indexOf(SEPARATOR) > -1) {
@@ -133,7 +117,7 @@ class LightingControllerEmitter extends EventEmitter2 {
 				this.emit('beatOff', data);
 				break;
 			case 'BUTTON_LIST':
-				this.onButtonList(data);
+				this._onButtonList(data);
 				break;
 			case 'BUTTON_PRESS':
 				this.emit('buttonPress', data);
@@ -151,7 +135,7 @@ class LightingControllerEmitter extends EventEmitter2 {
 				this.emit('interfaceChange', data);
 				break;
 			case 'ERROR':
-				this.onError({
+				this._onError({
 					type: data
 				});
 				break;
@@ -164,7 +148,7 @@ class LightingControllerEmitter extends EventEmitter2 {
 		}
 	}
 
-	onError(errorData) {
+	_onError(errorData) {
 		if (!errorData.type) {
 			errorData.type = 'UNKNOWN ERROR';
 		}
@@ -172,19 +156,18 @@ class LightingControllerEmitter extends EventEmitter2 {
 	}
 
 
-	onButtonList(line) {
+	_onButtonList(line) {
 		xmlStringParser(line, (err, result) => {
 			if (err) {
-				return this.onError({
+				return this._onError({
 					type: 'BUTTON LIST XML PARSE FAILED',
-					originalXML: line
+					error: err,
+					data: line
 				});
 			}
-			this.emit('buttonList', result);
+			this.emit('buttonList', buttonListFormatter.format(result));
 		});
 	}
-
-
 
 	/**
 	 * @method hello
@@ -195,8 +178,8 @@ class LightingControllerEmitter extends EventEmitter2 {
 	 * Response of Live : "HELLO" if OK else "ERROR|BAD PASSWORD".
 	 * 
 	 */
-	hello() {
-		this.sendSocketMessage('HELLO|' + this.settings.extApp + SEPARATOR + this.settings.password);
+	_hello() {
+		this._sendSocketMessage('HELLO|' + this.settings.extApp + SEPARATOR + this.settings.password);
 	}
 
 	/**
@@ -206,7 +189,7 @@ class LightingControllerEmitter extends EventEmitter2 {
 	 * This assigns the new BPM value in the “manual BPM” section of Live.
 	 */
 	bpm(bpm) {
-		this.sendSocketMessage('BPM' + SEPARATOR + bpm);
+		this._sendSocketMessage('BPM' + SEPARATOR + bpm);
 	}
 
 	/**
@@ -217,23 +200,23 @@ class LightingControllerEmitter extends EventEmitter2 {
 	 * This increments the beat in the “auto BPM” section of Live.
 	 */
 	beat() {
-		this.sendSocketMessage('BEAT');
+		this._sendSocketMessage('BEAT');
 	}
 
 	freeze() {
-		this.sendSocketMessage('FREEZE_ON');
+		this._sendSocketMessage('FREEZE_ON');
 	}
 
 	unfreeze() {
-		this.sendSocketMessage('FREEZE_OFF');
+		this._sendSocketMessage('FREEZE_OFF');
 	}
 
 	autoBpmOn() {
-		this.sendSocketMessage('AUTO_BPM_ON');
+		this._sendSocketMessage('AUTO_BPM_ON');
 	}
 
 	autoBpmOff() {
-		this.sendSocketMessage('AUTO_BPM_OFF');
+		this._sendSocketMessage('AUTO_BPM_OFF');
 	}
 
 	/**
@@ -248,7 +231,7 @@ class LightingControllerEmitter extends EventEmitter2 {
 	 * 
 	 */
 	cue(cueName) {
-		this.sendSocketMessage('CUE' + SEPARATOR + cueName);
+		this._sendSocketMessage('CUE' + SEPARATOR + cueName);
 	}
 
 	/**
@@ -266,7 +249,7 @@ class LightingControllerEmitter extends EventEmitter2 {
 	 * This presses the button with the name {button_name} in Live.
 	 */
 	buttonPress(buttonName) {
-		this.sendSocketMessage('BUTTON_PRESS' + SEPARATOR + buttonName);
+		this._sendSocketMessage('BUTTON_PRESS' + SEPARATOR + buttonName);
 	}
 
 	/**
@@ -276,7 +259,7 @@ class LightingControllerEmitter extends EventEmitter2 {
 	 * This releases the button with the name {button_name} in Live.
 	 */
 	buttonRelease(buttonName) {
-		this.sendSocketMessage('BUTTON_RELEASE' + SEPARATOR + buttonName);
+		this._sendSocketMessage('BUTTON_RELEASE' + SEPARATOR + buttonName);
 	}
 
 	/**
@@ -287,7 +270,7 @@ class LightingControllerEmitter extends EventEmitter2 {
 	 * This changes the position of the master fader in Live
 	 */
 	faderChange(fader, position) {
-		this.sendSocketMessage('FADER_CHANGE' + SEPARATOR + fader + SEPARATOR + position);
+		this._sendSocketMessage('FADER_CHANGE' + SEPARATOR + fader + SEPARATOR + position);
 	}
 
 	/**
@@ -340,7 +323,7 @@ class LightingControllerEmitter extends EventEmitter2 {
 	 *	(use only parameters you need)
 	 */
 	buttonList() {
-		this.sendSocketMessage('BUTTON_LIST');
+		this._sendSocketMessage('BUTTON_LIST');
 	}
 }
 

@@ -9,12 +9,12 @@ myCtrl.onAny((event, value) => {
 });
 myCtrl.on('connected', function() {
 	console.log('connected')
-	myCtrl.cue('lasers');
+	// myCtrl.cue('lasers');
 
-	setTimeout(function() {
-		myCtrl.cue('lasers')
-	},5000);
-	//myCtrl.buttonList();
+	// setTimeout(function() {
+	// 	myCtrl.cue('lasers')
+	// },5000);
+	myCtrl.buttonList();
 	// 
 	
 	//myCtrl.bpm(400);
