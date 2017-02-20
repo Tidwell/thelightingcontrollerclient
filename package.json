@@ -15,7 +15,8 @@
   ],
   "main": "./index.js",
   "scripts": {
-    "test": "./node_modules/jasmine/bin/jasmine.js"
+    "test": "./node_modules/jasmine/bin/jasmine.js",
+    "coverage": "node ./node_modules/istanbul/lib/cli.js cover --include-all-sources ./node_modules/jasmine/bin/jasmine.js"
   },
   "author": "Aaron Tidwell <aaron.tidwell@gmail.com>",
   "license": "MIT",
@@ -29,6 +30,7 @@
     "node": ">=6.0.0"
   },
   "devDependencies": {
+    "istanbul": "^0.4.5",
     "jasmine": "^2.5.3",
     "mockery": "^2.0.0"
   }

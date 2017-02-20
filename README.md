@@ -37,8 +37,9 @@ This was created using The Lighting Controller's publicly documented [Protocol D
  - [faderChange](#faderchange)
  - [interfaceChange](#interfacechange)
  - [unknownEvent](#unknownevent)
-6. [Known Live Bugs](#bugs-in-the-live-software)
-7. [Unknown Features](#unknown-features)
+6. [Development](#development)
+7. [Known Live Bugs](#bugs-in-the-live-software)
+8. [Unknown Features](#unknown-features)
 
 
 ##Install
@@ -376,6 +377,21 @@ The client encountered a socketMessage it was unable to parse.  Could potentiall
 		//the raw socket message.  See the Protocol Definition for parsing information.
 	});
 ```
+
+
+##Development
+---
+Clone the repo
+
+``git clone https://github.com/Tidwell/thelightingcontrollerclient.git``
+
+Run tests
+
+``npm test``
+
+Run coverage report
+
+``npm run-script coverage``
 
 
 ##Bugs in the Live Software

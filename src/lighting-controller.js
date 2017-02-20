@@ -8,7 +8,6 @@ const xmlStringParser = require('xml2js').parseString;
 
 const buttonListFormatter = require('./button-list-formatter');
 
-
 /**
  * LightingController
  */
