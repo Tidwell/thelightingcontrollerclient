@@ -11,6 +11,7 @@ This was created using The Lighting Controller's publically documented [Protocol
 
 
 ##Example
+
 ```js
 //import the client
 const LightingController = require('thelightingcontrollerclient');
@@ -33,71 +34,84 @@ myCtrl.onAny((event, value) => {
 
 
 ##Events
+
+
 ###connected
-The client has connected and successfully authenticated with Live
- ```js
+The client has connected and successfully authenticated with Live.
+
+ 
+```js
  	myCtrl.on('connected', () => {
 	});
 ```
 
+
 ###disconnected
-The client has disconnected from Live
+The client has disconnected from Live.
+
 ```js
 	myCtrl.on('disconnected', () => {
 	});
 ```
 
+
 ###error
+The client has encoutered an error.
+
 ```js
 	myCtrl.on('error', (errorObject) => {
-		//the client has encoutered an error
+		//errorObject will be an object containing:
+		{
+			type: String, // one of: 'BAD PASSWORD', 'SOCKET', 'BUTTON LIST XML PARSE FAILED', 'UNKNOWN ERROR'
+			error: Object, // the original error object thrown by whatever encountered the error, not all errors have this property
+			data: Mixed // the data that was being processed when the error occured, not all errors have this property
+		}
+	
 	});
 ```
 
-errorObject will be an object containing:
-
-```js
-	{
-		type: String, // one of: 'BAD PASSWORD', 'SOCKET', 'BUTTON LIST XML PARSE FAILED', 'UNKNOWN ERROR'
-		error: Object, // the original error object thrown by whatever encountered the error, not all errors have this property
-		data: Mixed // the data that was being processed when the error occured, not all errors have this property
-	}
-```
 
 ###unknownEvent
+The client encountered a socketMessage it was unable to parse.  Could potentially occur if Live is upated and the client library has yet to be updated to support new events.  Allows for parsing the message manually.
+
 ```js
 	myCtrl.on('unknownEvent', (socketMessage) => {
-		//the client encountered a socketMessage it was unable to parse.  Could potentially occur if Live is upated
-		//and the client library has yet to be updated to support new events.  Allows for parsing the message manually
 	});
 ```
+
 
 ###bpm
+The client recieved a request for the current BPM.  Use .bpm(Number) to respond.
+
 ```js
 	myCtrl.on('bpm', () => {
-		//the client recieved a request for the current BPM.  Use .bpm(Number) to respond.
 	});
 ```
+
 
 ###beatOn
+The client recieved a signal that it can start sending real time beats for live to use in BPM calculations. Use .beat() to respond.  *Note* The AutoBPM feature of the Live software only works on a PC.
+
 ```js
 	myCtrl.on('beatOn', () => {
-		//the client recieved a signal that it can start sending real time beats for live to use in BPM calculations. Use .beat() to respond.  *Note* The AutoBPM feature of the Live software only works on a PC
 	});
 ```
+
 
 ###beatOff
+The client recieved a signal that it should stop sending real time beats.  *Note* The AutoBPM feature of the Live software only works on a PC.
+
 ```js
  	myCtrl.on('beatOff', () => {
-		//the client recieved a signal that it should stop sending real time beats.  *Note* The AutoBPM feature of the Live software only works on a PC
 	});
 ```
 
+
 ###buttonList
+The client recieved a response to calling .buttonList() containing the Live button and master faders list.
+
 ```js
 	myCtrl.on('buttonList', (buttonListObject) => {
-		//the client recieved a response to calling .buttonList() containing the Live button and master faders list
-
 		//example buttonListObject:
 
 		{
@@ -144,25 +158,32 @@ errorObject will be an object containing:
 	});
 ```
 
+
 ###buttonPress
+A button was pressed
+
 ```js
  	myCtrl.on('buttonPress', (buttonName) => {
-		//String buttonName The name of the button that was pressed
+ 		//String buttonName The name of the button that was pressed
 	});
 ```
 
+
 ###buttonRelease
+A button was released
+
 ```js
  	myCtrl.on('buttonPress', (buttonName) => {
 		//String buttonName The name of the button that was released
 	});
 ```
 
+
 ###faderChange
+A fader was moved in value.
+
 ```js
  	myCtrl.on('faderChange', (faderObject) => {
-		//A fader was moved in value.
-
 		//Example faderObject:
 		{
 			name: String,
@@ -171,10 +192,12 @@ errorObject will be an object containing:
 	});
 ```
 		
+
 ###interfaceChange
+The interface has changed in the Live software - generally a hint to call .buttonList()
+
 ```js
  	myCtrl.on('interfaceChange', () => {
-		//The interface has changed in the Live software - generally a hint to call .buttonList()
 	});
 ```
 
