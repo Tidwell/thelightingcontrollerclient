@@ -394,6 +394,8 @@ The client encountered a socketMessage it was unable to parse.  Could potentiall
 
 # Development
 
+![Travis Master Test](https://travis-ci.org/Tidwell/thelightingcontrollerclient.svg)
+
 Clone the repo
 
 ```bash
