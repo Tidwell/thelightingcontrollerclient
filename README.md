@@ -41,14 +41,14 @@ This was created using The Lighting Controller's publicly documented [Protocol D
 8. [Unknown Features](#unknown-features)
 
 
-##Install
+# Install
 ``$ npm install thelightingcontrollerclient``
 
 
 ---
 
 
-##Example
+# Example
 
 ```js
 //import the client
@@ -82,7 +82,7 @@ client.onAny((event, value) => {
 ---
 
 
-##Instantiation
+# Instantiation
 
 When creating an instance of the client, you should pass a configuration object.  The following defaults have been configured, you should pass any properties that you need to overwrite.
 
@@ -100,7 +100,7 @@ const client = new LightingController({
 ---
 
 
-##Methods
+# Methods
 
 ###client.connect()
 Establishes a connection to the Live application.  On success, will fire a 'connected' event
@@ -211,7 +211,7 @@ Send to change the position of the {faderName} fader in Live to {faderValue}.  {
 ---
 
 
-##Events
+# Events
 
 ###connected
 The client has connected and successfully authenticated with Live.
@@ -393,7 +393,7 @@ The client encountered a socketMessage it was unable to parse.  Could potentiall
 ---
 
 
-##Development
+# Development
 
 Clone the repo
 
@@ -417,7 +417,7 @@ Run coverage report
 ---
 
 
-##Bugs in the Live Software
+# Bugs in the Live Software
 
 
 A bug report has been opened for these issues with TheLightingController, but until they are fixed in the software, you may encounter these issues:
@@ -440,7 +440,7 @@ A bug report has been opened for these issues with TheLightingController, but un
 ---
 
 
-##Unknown Features
+# Unknown Features
 ---
 
 I need to test these on a PC (where AutoBPM works)
