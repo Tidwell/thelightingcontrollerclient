@@ -1,4 +1,4 @@
-TheLightingControllerClient
+#TheLightingControllerClient
 --
 
 A node.js client library for communicating with The Lighting Controller software products (ShowXpress, QuickDmx, and SweetLight).  This library is not created, supported, or endorsed by Chauvet, Showtec, SweetLight, or The Lighting Controller.
@@ -6,11 +6,11 @@ A node.js client library for communicating with The Lighting Controller software
 This was created using The Lighting Controller's publically documented [Protocol Definition](http://download.thelightingcontroller.com/software/External_Application/Protocol.pdf).
 
 
-#Install
+##Install
 ``$ npm install thelightingcontrollerclient``
 
 
-#Example
+##Example
 ```js
 //import the client
 const LightingController = require('thelightingcontrollerclient');
@@ -32,22 +32,22 @@ myCtrl.onAny((event, value) => {
 ```
 
 
-#Events
- ##connected
+##Events
+###connected
  	```js
  		myCtrl.on('connected', () => {
 			//the client has connected and successfully authenticated with Live
 		});
  	```
 
- ##disconnected
+###disconnected
  	```js
  		myCtrl.on('disconnected', () => {
 			//the client has disconnected from Live
 		});
 	```
 
- ##error
+###error
  	```js
  		myCtrl.on('error', (errorObject) => {
 			//the client has encoutered an error
@@ -63,7 +63,7 @@ myCtrl.onAny((event, value) => {
  	}
  	```
 
- ##unknownEvent
+###unknownEvent
  	```js
  		myCtrl.on('unknownEvent', (socketMessage) => {
 			//the client encountered a socketMessage it was unable to parse.  Could potentially occur if Live is upated
@@ -71,28 +71,28 @@ myCtrl.onAny((event, value) => {
 		});
  	```
 
- ##bpm
+###bpm
  	```js
  	myCtrl.on('bpm', () => {
 		//the client recieved a request for the current BPM.  Use .bpm(Number) to respond.
 	});
 	```
 
- ##beatOn
+###beatOn
  	```js
  	myCtrl.on('beatOn', () => {
 		//the client recieved a signal that it can start sending real time beats for live to use in BPM calculations. Use .beat() to respond.  *Note* The AutoBPM feature of the Live software only works on a PC
 	});
 	```
 
- ##beatOff
+###beatOff
  	```js
  	myCtrl.on('beatOff', () => {
 		//the client recieved a signal that it should stop sending real time beats.  *Note* The AutoBPM feature of the Live software only works on a PC
 	});
 	```
 
- ##buttonList
+###buttonList
  	```js
  		myCtrl.on('buttonList', (buttonListObject) => {
 			//the client recieved a response to calling .buttonList() containing the Live button and master faders list
@@ -143,21 +143,21 @@ myCtrl.onAny((event, value) => {
 		});
  	```
 
- ##buttonPress
+###buttonPress
  	```js
  	myCtrl.on('buttonPress', (buttonName) => {
 		//String buttonName The name of the button that was pressed
 	});
 	```
 
- ##buttonRelease
+###buttonRelease
  	```js
  	myCtrl.on('buttonPress', (buttonName) => {
 		//String buttonName The name of the button that was released
 	});
 	```
 
- ##faderChange
+###faderChange
  	```js
  	myCtrl.on('faderChange', (faderObject) => {
 		//A fader was moved in value.
@@ -170,7 +170,7 @@ myCtrl.onAny((event, value) => {
 	});
 	```
 		
- ##interfaceChange
+###interfaceChange
  	```js
  	myCtrl.on('interfaceChange', () => {
 		//The interface has changed in the Live software - generally a hint to call .buttonList()
