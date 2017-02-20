@@ -1,5 +1,4 @@
 #thelightingcontrollerclient
---
 
 A node.js client library for communicating with The Lighting Controller software products (ShowXpress, QuickDmx, and SweetLight).  This library is not created, supported, or endorsed by Chauvet, Showtec, SweetLight, or The Lighting Controller.
 
@@ -46,6 +45,9 @@ This was created using The Lighting Controller's publicly documented [Protocol D
 ``$ npm install thelightingcontrollerclient``
 
 
+---
+
+
 ##Example
 
 ```js
@@ -77,6 +79,9 @@ client.onAny((event, value) => {
 ```
 
 
+---
+
+
 ##Instantiation
 
 When creating an instance of the client, you should pass a configuration object.  The following defaults have been configured, you should pass any properties that you need to overwrite.
@@ -90,6 +95,9 @@ const client = new LightingController({
 	password: ''
 });
 ```
+
+
+---
 
 
 ##Methods
@@ -198,6 +206,9 @@ Send to change the position of the {faderName} fader in Live to {faderValue}.  {
 ```js
  	client.faderChange('fader one', 50);
 ```
+
+
+---
 
 
 ##Events
@@ -379,8 +390,11 @@ The client encountered a socketMessage it was unable to parse.  Could potentiall
 ```
 
 
-##Development
 ---
+
+
+##Development
+
 Clone the repo
 
 ```bash
@@ -400,8 +414,11 @@ Run coverage report
 ```
 
 
-##Bugs in the Live Software
 ---
+
+
+##Bugs in the Live Software
+
 
 A bug report has been opened for these issues with TheLightingController, but until they are fixed in the software, you may encounter these issues:
 
@@ -419,6 +436,8 @@ A bug report has been opened for these issues with TheLightingController, but un
 
 - AutoBPM toggle event is not broadcast or re-broadcast.  (sending AUTO_BPM_ON or AUTO_BPM_OFF from a client app does not send an event to other client apps AND toggling AUTOBPM in Live does not send an event to client apps)
 
+
+---
 
 
 ##Unknown Features
