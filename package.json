@@ -16,7 +16,8 @@
   "main": "./index.js",
   "scripts": {
     "test": "./node_modules/jasmine/bin/jasmine.js",
-    "coverage": "node ./node_modules/istanbul/lib/cli.js cover --include-all-sources ./node_modules/jasmine/bin/jasmine.js"
+    "coverage": "node ./node_modules/istanbul/lib/cli.js cover --include-all-sources ./node_modules/jasmine/bin/jasmine.js",
+    "mock-server": "node ./scripts/mock-server"
   },
   "author": "Aaron Tidwell <aaron.tidwell@gmail.com>",
   "license": "MIT",

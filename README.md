@@ -414,6 +414,14 @@ Run coverage report
 	$ npm run-script coverage
 ```
 
+Mock Server
+
+If you need to see how the offical [Live Mobile Apps](http://www.thelightingcontroller.com/viewtopic.php?f=47&t=836) send commands to Live, you can run this script as a mock Live instance.  It will simply dump all commands sent to it into console.
+
+```bash
+	$ npm run-script mock-server
+```
+
 
 ---
 
