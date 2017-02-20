@@ -25,8 +25,11 @@ const myCtrl = new LightingController({
 myCtrl.on('connected', () => {
 	myCtrl.buttonList(); //get the button list
 });
+```
 
-//the client is an instance of [EventEmitter2](https://github.com/asyncly/EventEmitter2). You can use onAny to subscribe to all events and click around in Live to see what is sent to the client.
+The client is an instance of [EventEmitter2](https://github.com/asyncly/EventEmitter2). You can use onAny to subscribe to all events and click around in Live to see what is sent to the client.
+
+```js
 myCtrl.onAny((event, value) => {
 	console.log(event, value);
 });
