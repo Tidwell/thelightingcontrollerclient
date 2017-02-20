@@ -34,18 +34,18 @@ myCtrl.onAny((event, value) => {
 
 ##Events
 ###connected
- 	```js
- 		myCtrl.on('connected', () => {
-			//the client has connected and successfully authenticated with Live
-		});
- 	```
+ ```js
+ 	myCtrl.on('connected', () => {
+		//the client has connected and successfully authenticated with Live
+	});
+```
 
 ###disconnected
- 	```js
- 		myCtrl.on('disconnected', () => {
-			//the client has disconnected from Live
-		});
-	```
+```js
+	myCtrl.on('disconnected', () => {
+		//the client has disconnected from Live
+	});
+```
 
 ###error
  	```js
