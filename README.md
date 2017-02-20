@@ -10,7 +10,8 @@ This was created using The Lighting Controller's publicly documented [Protocol D
 1. [Install](#install)
 2. [Example](#example)
 3. [Instantiation](#instantiation)
-4. [Events](#events)
+4. [Methods](#methods)
+5. [Events](#events)
  - [connected](#connected)
  - [disconnected](#disconnected)
  - [error](#error)
@@ -23,8 +24,8 @@ This was created using The Lighting Controller's publicly documented [Protocol D
  - [faderchange](#faderchange)
  - [interfaceChange](#interfacechange)
  - [unknownEvent](#unknownevent)
-5. [Known Live Bugs](#bugs-in-the-live-software)
-6. [Unknown Features](#unknown-features)
+6. [Known Live Bugs](#bugs-in-the-live-software)
+7. [Unknown Features](#unknown-features)
 
 
 ##Install
@@ -38,17 +39,17 @@ This was created using The Lighting Controller's publicly documented [Protocol D
 const LightingController = require('thelightingcontrollerclient');
 
 //create a new instance of the client
-const myCtrl = new LightingController({
+const client = new LightingController({
 	password: '1234'
 });
 
 //subscribe to certain events, for a full list of events, see below
-myCtrl.on('connected', () => {
-	myCtrl.buttonList(); //get the button list
+client.on('connected', () => {
+	client.buttonList(); //get the button list
 });
 
 //print to console when we get the buttons
-myCtrl.on('buttonList', (buttons) => {
+client.on('buttonList', (buttons) => {
 	console.log(JSON.stringify(buttons, null, 2));
 });
 ```
@@ -56,7 +57,7 @@ myCtrl.on('buttonList', (buttons) => {
 The client is an instance of [EventEmitter2](https://github.com/asyncly/EventEmitter2). You can use onAny to subscribe to all events and click around in Live to see what is sent to the client.  This also allows for usage of methods like .once, .many, .removeAllListeners, and all other EventEmitter2 methods.  See the EventEmitter2 docs for a list of methods for interacting with the EventEmitter.
 
 ```js
-myCtrl.onAny((event, value) => {
+client.onAny((event, value) => {
 	console.log(event, value);
 });
 ```
@@ -68,12 +69,120 @@ When creating an instance of the client, you should pass a configuration object.
 
 ```js
 const LightingController = require('thelightingcontrollerclient');
-const myCtrl = new LightingController({
+const client = new LightingController({
 	port: 7348,
 	ip: '127.0.0.1',
 	extApp: 'thelightingcontrollerclient',
 	password: ''
 });
+```
+
+
+##Methods
+
+###client.connect()
+Establishes a connection to the Live application.  On success, will fire a 'connected' event
+
+```js
+ 	client.connect();
+```
+
+
+###client.autoBpmOn()
+Enables Automatic BPM detection.
+
+```js
+ 	client.autoBpmOn();
+```
+
+
+###client.autoBpmOff()
+Disables Automatic BPM detection.
+
+```js
+ 	client.autoBpmOff();
+```
+
+
+###client.beat()
+Increments the beat in the "auto BPM" section of Live.
+Send after receiving 'beatOn' event from Live and stop sending after receiving a 'beatOff' event.
+
+```js
+ 	client.beat();
+```
+
+
+###client.bpm(Number beatsPerMinute)
+Assigns the new BPM value in the "manual BPM" section of Live.
+Send at each song start or when recieving a 'bpm' event from Live.
+
+```js
+ 	client.bpm(120);
+```
+
+
+###client.buttonList()
+Send to ask Live for the button and master faders list.  On success, will fire a 'buttonList' event
+
+```js
+ 	client.buttonList();
+```
+
+
+###client.buttonPress(String buttonName)
+Send to press the button with the name {buttonName} in Live.
+
+```js
+ 	client.buttonPress('button one');
+```
+
+
+###client.buttonRelease(String buttonName)
+Send to release the button with the name {buttonName} in Live.
+
+```js
+ 	client.buttonRelease('button one');
+```
+
+
+###client.buttonToggle(String buttonName)
+Send to toggle the button with the name {buttonName} in Live.  This is an alias of .cue()
+
+```js
+ 	client.buttonToggle('button one');
+```
+
+
+###client.cue(String cueName)
+Send to toggle the button with the name {buttonName} in Live.  This is an alias of .buttonToggle()
+
+```js
+ 	client.cue('button one');
+```
+
+
+###client.freeze()
+Send to Freeze the Live board
+
+```js
+ 	client.freeze();
+```
+
+
+###client.unfreeze()
+Send to Un-Freeze the Live board
+
+```js
+ 	client.unfreeze();
+```
+
+
+###client.faderChange(String faderName, Number faderValue)
+Send to change the position of the {faderName} fader in Live to {faderValue}.  {faderValue} is a percentage between -100 and 100
+
+```js
+ 	client.faderChange('fader one', 50);
 ```
 
 
@@ -83,7 +192,7 @@ const myCtrl = new LightingController({
 The client has connected and successfully authenticated with Live.
  
 ```js
- 	myCtrl.on('connected', () => {
+ 	client.on('connected', () => {
 	});
 ```
 
@@ -92,7 +201,7 @@ The client has connected and successfully authenticated with Live.
 The client has disconnected from Live.
 
 ```js
-	myCtrl.on('disconnected', () => {
+	client.on('disconnected', () => {
 	});
 ```
 
@@ -101,7 +210,7 @@ The client has disconnected from Live.
 The client has encoutered an error.
 
 ```js
-	myCtrl.on('error', (errorObject) => {
+	client.on('error', (errorObject) => {
 		//errorObject will be an object containing:
 		{
 			type: String, // one of: 'BAD PASSWORD', 'SOCKET', 'BUTTON LIST XML PARSE FAILED', 'UNKNOWN ERROR'
@@ -117,7 +226,7 @@ The client has encoutered an error.
 The client recieved a signal that it can start sending real time beats for live to use in BPM calculations. Use .beat() to respond.  *Note* The AutoBPM feature of the Live software only works on a PC.
 
 ```js
-	myCtrl.on('beatOn', () => {
+	client.on('beatOn', () => {
 	});
 ```
 
@@ -126,7 +235,7 @@ The client recieved a signal that it can start sending real time beats for live 
 The client recieved a signal that it should stop sending real time beats.  *Note* The AutoBPM feature of the Live software only works on a PC.
 
 ```js
- 	myCtrl.on('beatOff', () => {
+ 	client.on('beatOff', () => {
 	});
 ```
 
@@ -135,7 +244,7 @@ The client recieved a signal that it should stop sending real time beats.  *Note
 The client recieved a request for the current BPM.  Use .bpm(Number) to respond.
 
 ```js
-	myCtrl.on('bpm', () => {
+	client.on('bpm', () => {
 	});
 ```
 
@@ -144,7 +253,7 @@ The client recieved a request for the current BPM.  Use .bpm(Number) to respond.
 The client recieved a response to calling .buttonList() containing the Live button and master faders list.
 
 ```js
-	myCtrl.on('buttonList', (buttonListObject) => {
+	client.on('buttonList', (buttonListObject) => {
 		//example buttonListObject:
 
 		{
@@ -196,7 +305,7 @@ The client recieved a response to calling .buttonList() containing the Live butt
 A button was pressed
 
 ```js
- 	myCtrl.on('buttonPress', (buttonName) => {
+ 	client.on('buttonPress', (buttonName) => {
  		//String buttonName The name of the button that was pressed
 	});
 ```
@@ -206,7 +315,7 @@ A button was pressed
 A button was released
 
 ```js
- 	myCtrl.on('buttonPress', (buttonName) => {
+ 	client.on('buttonPress', (buttonName) => {
 		//String buttonName The name of the button that was released
 	});
 ```
@@ -216,7 +325,7 @@ A button was released
 A fader was moved in value.
 
 ```js
- 	myCtrl.on('faderChange', (faderObject) => {
+ 	client.on('faderChange', (faderObject) => {
 		//Example faderObject:
 		{
 			name: String,
@@ -230,7 +339,7 @@ A fader was moved in value.
 The interface has changed in the Live software - generally a hint to call .buttonList()
 
 ```js
- 	myCtrl.on('interfaceChange', () => {
+ 	client.on('interfaceChange', () => {
 	});
 ```
 
@@ -239,7 +348,7 @@ The interface has changed in the Live software - generally a hint to call .butto
 The client encountered a socketMessage it was unable to parse.  Could potentially occur if Live is upated and the client library has yet to be updated to support new events.  Allows for parsing the message manually.
 
 ```js
-	myCtrl.on('unknownEvent', (socketMessage) => {
+	client.on('unknownEvent', (socketMessage) => {
 		//the raw socket message.  See the Protocol Definition for parsing information.
 	});
 ```
