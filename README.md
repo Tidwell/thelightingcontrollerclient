@@ -3,7 +3,7 @@
 
 A node.js client library for communicating with The Lighting Controller software products (ShowXpress, QuickDmx, and SweetLight).  This library is not created, supported, or endorsed by Chauvet, Showtec, SweetLight, or The Lighting Controller.
 
-This was created using The Lighting Controller's publically documented [Protocol Definition](http://download.thelightingcontroller.com/software/External_Application/Protocol.pdf).
+This was created using The Lighting Controller's publicly documented [Protocol Definition](http://download.thelightingcontroller.com/software/External_Application/Protocol.pdf).
 
 
 ##Install
@@ -24,6 +24,11 @@ const myCtrl = new LightingController({
 //subscribe to certain events, for a full list of events, see below
 myCtrl.on('connected', () => {
 	myCtrl.buttonList(); //get the button list
+});
+
+//print to console when we get the buttons
+myCtrl.on('buttonList', (buttons) => {
+	console.log(JSON.stringify(buttons, null, 2));
 });
 ```
 
