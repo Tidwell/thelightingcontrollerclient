@@ -1,5 +1,10 @@
 #Changelog
 
+#0.2.0 - 2/20/2017
+- Add example application link to README
+- Switch faderChange event to fire with object containing index property instead of faderIndex
+- Switch faderChange method to accept an object containing index property instead of faderName
+
 #0.1.0 - 2/20/2017
 - Fix faderChange event to fire with faderIndex and NOT faderName to match how Live sends the event
 - Add example to scripts folder and to docs

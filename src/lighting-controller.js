@@ -128,7 +128,7 @@ class LightingController extends EventEmitter2 {
 				break;
 			case 'FADER_CHANGE':
 				this.emit('faderChange', {
-					faderIndex: Number(data),
+					index: Number(data),
 					value: Number(line.split(SEPARATOR)[2])
 				});
 				break;
@@ -295,11 +295,12 @@ class LightingController extends EventEmitter2 {
 	 * external application.
 	 * This changes the position of the master fader in Live
 	 */
-	faderChange(faderName, position) {
-		if (!faderName) {
+	faderChange(faderIndex, position) {
+		faderIndex = Number(faderIndex);
+		if (isNaN(faderIndex)) {
 			return this._onError({
 				type: 'CLIENT ERROR',
-				error: 'invalid fader name'
+				error: 'invalid fader index'
 			});
 		}
 		position = Number(position);
@@ -309,7 +310,7 @@ class LightingController extends EventEmitter2 {
 				error: 'invalid fader value'
 			});
 		}
-		this._sendSocketMessage('FADER_CHANGE' + SEPARATOR + faderName + SEPARATOR + position);
+		this._sendSocketMessage('FADER_CHANGE' + SEPARATOR + faderIndex + SEPARATOR + position);
 	}
 
 	/**

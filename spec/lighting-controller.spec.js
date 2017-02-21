@@ -285,7 +285,7 @@ describe("TheLightingControllerClient", () => {
 				line: 'FADER_CHANGE|1|25',
 				event: 'faderChange',
 				data: {
-					faderIndex: 1,
+					index: 1,
 					value: 25
 				}
 			}];
@@ -557,14 +557,14 @@ describe("TheLightingControllerClient", () => {
 
 		describe('faderChange', () => {
 			it('should fire a fader message', () => {
-				client.faderChange('my fader', 50);
-				expect(messageToSend).toBe('FADER_CHANGE|my fader|50');
+				client.faderChange(1, 50);
+				expect(messageToSend).toBe('FADER_CHANGE|1|50');
 			});
 			it('should fire even if the value is 0', () => {
-				client.faderChange('my fader', 0);
-				expect(messageToSend).toBe('FADER_CHANGE|my fader|0');
+				client.faderChange(2, 0);
+				expect(messageToSend).toBe('FADER_CHANGE|2|0');
 			});
-			it('should fire an error if passed an invalid name', () => {
+			it('should fire an error if passed an invalid index', () => {
 				let eventFired = false;
 				let data = null;
 				client.on('error', (d) => {
@@ -574,7 +574,19 @@ describe("TheLightingControllerClient", () => {
 				client.faderChange();
 				expect(eventFired).toBe(true);
 				expect(data.type).toEqual('CLIENT ERROR');
-				expect(data.error).toEqual('invalid fader name');
+				expect(data.error).toEqual('invalid fader index');
+			});
+			it('should fire an error if passed an invalid index', () => {
+				let eventFired = false;
+				let data = null;
+				client.on('error', (d) => {
+					data = d;
+					eventFired = true;
+				});
+				client.faderChange('test', 10);
+				expect(eventFired).toBe(true);
+				expect(data.type).toEqual('CLIENT ERROR');
+				expect(data.error).toEqual('invalid fader index');
 			});
 			it('should fire an error if passed an invalid value', () => {
 				let eventFired = false;
@@ -583,7 +595,7 @@ describe("TheLightingControllerClient", () => {
 					data = d;
 					eventFired = true;
 				});
-				client.faderChange('my fader');
+				client.faderChange(1);
 				expect(eventFired).toBe(true);
 				expect(data.type).toEqual('CLIENT ERROR');
 				expect(data.error).toEqual('invalid fader value');
@@ -595,7 +607,7 @@ describe("TheLightingControllerClient", () => {
 					data = d;
 					eventFired = true;
 				});
-				client.faderChange('my fader', -101);
+				client.faderChange(2, -101);
 				expect(eventFired).toBe(true);
 				expect(data.type).toEqual('CLIENT ERROR');
 				expect(data.error).toEqual('invalid fader value');
@@ -607,7 +619,7 @@ describe("TheLightingControllerClient", () => {
 					data = d;
 					eventFired = true;
 				});
-				client.faderChange('my fader', 101);
+				client.faderChange(33, 101);
 				expect(eventFired).toBe(true);
 				expect(data.type).toEqual('CLIENT ERROR');
 				expect(data.error).toEqual('invalid fader value');

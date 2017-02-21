@@ -4,8 +4,6 @@ A node.js client library for communicating with The Lighting Controller software
 
 This was created using The Lighting Controller's publicly documented [Protocol Definition](http://download.thelightingcontroller.com/software/External_Application/Protocol.pdf).
 
-An example application that replicates the Live Mobile app can be seen at [thelightingcontrollerclient-example](https://github.com/Tidwell/thelightingcontrollerclient-example)
-
 
 1. [Install](#install)
 2. [Example](#example)
@@ -23,7 +21,7 @@ An example application that replicates the Live Mobile app can be seen at [theli
  - [client.cue](#clientcuestring-cuename)
  - [client.freeze](#clientfreeze)
  - [client.unfreeze](#clientunfreeze)
- - [client.faderChange](#clientfaderchangestring-fadername-number-fadervalue)
+ - [client.faderChange](#clientfaderchangenumber-faderindex-number-fadervalue)
 5. [Events](#events)
  - [connected](#connected)
  - [disconnected](#disconnected)
@@ -204,11 +202,11 @@ Send to Un-Freeze the Live board
 ```
 
 
-###client.faderChange(String faderName, Number faderValue)
-Send to change the position of the {faderName} fader in Live to {faderValue}.  {faderValue} is a percentage between -100 and 100
+###client.faderChange(Number faderIndex, Number faderValue)
+Send to change the position of the {faderIndex} fader in Live to {faderValue}.  {faderValue} is a percentage between -100 and 100.  *Note* The Live App expects The fader's index, NOT the name.
 
 ```js
- 	client.faderChange('fader one', 50);
+ 	client.faderChange(1, 50);
 ```
 
 
@@ -368,7 +366,7 @@ A fader was moved in value. *Note* The Live App sends The fader's index, NOT the
  	client.on('faderChange', (faderObject) => {
 		//Example faderObject:
 		{
-			faderIndex: Number,
+			index: Number,
 			value: Number
 		}
 	});

@@ -1,6 +1,6 @@
 {
   "name": "thelightingcontrollerclient",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Node.js client library for communicating with The Lighting Controller software products (ShowXpress, QuickDmx, and SweetLight)",
   "keywords": [
     "lighting",
