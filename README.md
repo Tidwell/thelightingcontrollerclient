@@ -4,6 +4,8 @@ A node.js client library for communicating with The Lighting Controller software
 
 This was created using The Lighting Controller's publicly documented [Protocol Definition](http://download.thelightingcontroller.com/software/External_Application/Protocol.pdf).
 
+An example application that replicates the Live Mobile app can be seen at [thelightingcontrollerclient-example](https://github.com/Tidwell/thelightingcontrollerclient-example)
+
 
 1. [Install](#install)
 2. [Example](#example)
