@@ -282,10 +282,10 @@ describe("TheLightingControllerClient", () => {
 
 		it('should emit faderChange with both arguments', () => {
 			const cmds = [{
-				line: 'FADER_CHANGE|my fader|25',
+				line: 'FADER_CHANGE|1|25',
 				event: 'faderChange',
 				data: {
-					name: 'my fader',
+					faderIndex: 1,
 					value: 25
 				}
 			}];

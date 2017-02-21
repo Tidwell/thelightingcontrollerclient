@@ -68,6 +68,8 @@ client.on('connected', () => {
 client.on('buttonList', (buttons) => {
 	console.log(JSON.stringify(buttons, null, 2));
 });
+
+client.connect();
 ```
 
 The client is an instance of [EventEmitter2](https://github.com/asyncly/EventEmitter2). You can use onAny to subscribe to all events and click around in Live to see what is sent to the client.  This also allows for usage of methods like .once, .many, .removeAllListeners, and all other EventEmitter2 methods.  See the EventEmitter2 docs for a list of methods for interacting with the EventEmitter.
@@ -358,13 +360,13 @@ A button was released
 
 
 ###faderChange
-A fader was moved in value.
+A fader was moved in value. *Note* The Live App sends The fader's index, NOT the name.
 
 ```js
  	client.on('faderChange', (faderObject) => {
 		//Example faderObject:
 		{
-			name: String,
+			faderIndex: Number,
 			value: Number
 		}
 	});
@@ -417,12 +419,19 @@ Run coverage report
 
 Mock Server
 
-If you need to see how the offical [Live Mobile Apps](http://www.thelightingcontroller.com/viewtopic.php?f=47&t=836) send commands to Live, you can run this script as a mock Live instance.  It will simply dump all commands sent to it into console.
+If you need to see how the offical [Live Mobile Apps](http://www.thelightingcontroller.com/viewtopic.php?f=47&t=836) sends commands to Live, you can run this script as a mock Live instance.  It will simply dump all commands sent to it into console.
 
 ```bash
 	$ npm run-script mock-server
 ```
 
+Echo Example
+
+If you need to just dump commands as they are sent from Live, you can run this script.
+
+```bash
+	$ npm run-script example
+```
 
 ---
 

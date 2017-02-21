@@ -128,7 +128,7 @@ class LightingController extends EventEmitter2 {
 				break;
 			case 'FADER_CHANGE':
 				this.emit('faderChange', {
-					name: data,
+					faderIndex: Number(data),
 					value: Number(line.split(SEPARATOR)[2])
 				});
 				break;
