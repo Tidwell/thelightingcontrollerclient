@@ -560,6 +560,10 @@ describe("TheLightingControllerClient", () => {
 				client.faderChange(1, 50);
 				expect(messageToSend).toBe('FADER_CHANGE|1|50');
 			});
+			it('should fire even if the index is 0', () => {
+				client.faderChange(0, 0);
+				expect(messageToSend).toBe('FADER_CHANGE|0|0');
+			});
 			it('should fire even if the value is 0', () => {
 				client.faderChange(2, 0);
 				expect(messageToSend).toBe('FADER_CHANGE|2|0');
