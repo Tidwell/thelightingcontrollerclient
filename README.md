@@ -80,6 +80,8 @@ client.onAny((event, value) => {
 });
 ```
 
+A full client example can be found at [tidwell/thelightingcontrollerclient-example](https://github.com/Tidwell/thelightingcontrollerclient-example).
+
 
 ---
 
