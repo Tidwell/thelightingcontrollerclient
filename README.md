@@ -1,4 +1,4 @@
-#thelightingcontrollerclient
+# thelightingcontrollerclient
 
 A node.js client library for communicating with The Lighting Controller software products (ShowXpress, QuickDmx, and SweetLight).  This library is not created, supported, or endorsed by Chauvet, Showtec, SweetLight, or The Lighting Controller.
 
@@ -31,7 +31,7 @@ This was created using The Lighting Controller's publicly documented [Protocol D
  - [bpm](#bpm)
  - [buttonList](#buttonlist)
  - [buttonPress](#buttonpress)
- - [buttonRelease](#buttonRelease)
+ - [buttonRelease](#buttonrelease)
  - [faderChange](#faderchange)
  - [interfaceChange](#interfacechange)
  - [unknownEvent](#unknownevent)
@@ -106,7 +106,7 @@ const client = new LightingController({
 
 # Methods
 
-###client.connect()
+### client.connect()
 Establishes a connection to the Live application.  On success, will fire a 'connected' event
 
 ```js
@@ -114,7 +114,7 @@ Establishes a connection to the Live application.  On success, will fire a 'conn
 ```
 
 
-###client.autoBpmOn()
+### client.autoBpmOn()
 Enables Automatic BPM detection.
 
 ```js
@@ -122,7 +122,7 @@ Enables Automatic BPM detection.
 ```
 
 
-###client.autoBpmOff()
+### client.autoBpmOff()
 Disables Automatic BPM detection.
 
 ```js
@@ -130,7 +130,7 @@ Disables Automatic BPM detection.
 ```
 
 
-###client.beat()
+### client.beat()
 Increments the beat in the "auto BPM" section of Live.
 Send after receiving 'beatOn' event from Live and stop sending after receiving a 'beatOff' event.
 
@@ -139,7 +139,7 @@ Send after receiving 'beatOn' event from Live and stop sending after receiving a
 ```
 
 
-###client.bpm(Number beatsPerMinute)
+### client.bpm(Number beatsPerMinute)
 Assigns the new BPM value in the "manual BPM" section of Live.
 Send at each song start or when recieving a 'bpm' event from Live.
 
@@ -148,7 +148,7 @@ Send at each song start or when recieving a 'bpm' event from Live.
 ```
 
 
-###client.buttonList()
+### client.buttonList()
 Send to ask Live for the button and master faders list.  On success, will fire a 'buttonList' event
 
 ```js
@@ -156,7 +156,7 @@ Send to ask Live for the button and master faders list.  On success, will fire a
 ```
 
 
-###client.buttonPress(String buttonName)
+### client.buttonPress(String buttonName)
 Send to press the button with the name {buttonName} in Live.
 
 ```js
@@ -164,7 +164,7 @@ Send to press the button with the name {buttonName} in Live.
 ```
 
 
-###client.buttonRelease(String buttonName)
+### client.buttonRelease(String buttonName)
 Send to release the button with the name {buttonName} in Live.
 
 ```js
@@ -172,7 +172,7 @@ Send to release the button with the name {buttonName} in Live.
 ```
 
 
-###client.buttonToggle(String buttonName)
+### client.buttonToggle(String buttonName)
 Send to toggle the button with the name {buttonName} in Live.  This is an alias of .cue()
 
 ```js
@@ -180,7 +180,7 @@ Send to toggle the button with the name {buttonName} in Live.  This is an alias 
 ```
 
 
-###client.cue(String cueName)
+### client.cue(String cueName)
 Send to toggle the button with the name {buttonName} in Live.  This is an alias of .buttonToggle()
 
 ```js
@@ -188,7 +188,7 @@ Send to toggle the button with the name {buttonName} in Live.  This is an alias 
 ```
 
 
-###client.freeze()
+### client.freeze()
 Send to Freeze the Live board
 
 ```js
@@ -196,7 +196,7 @@ Send to Freeze the Live board
 ```
 
 
-###client.unfreeze()
+### client.unfreeze()
 Send to Un-Freeze the Live board
 
 ```js
@@ -204,7 +204,7 @@ Send to Un-Freeze the Live board
 ```
 
 
-###client.faderChange(Number faderIndex, Number faderValue)
+### client.faderChange(Number faderIndex, Number faderValue)
 Send to change the position of the {faderIndex} fader in Live to {faderValue}.  {faderValue} is a percentage between -100 and 100.  *Note* The Live App expects The fader's index, NOT the name.
 
 ```js
@@ -217,7 +217,7 @@ Send to change the position of the {faderIndex} fader in Live to {faderValue}.  
 
 # Events
 
-###connected
+### connected
 The client has connected and successfully authenticated with Live.
  
 ```js
@@ -226,7 +226,7 @@ The client has connected and successfully authenticated with Live.
 ```
 
 
-###disconnected
+### disconnected
 The client has disconnected from Live.
 
 ```js
@@ -235,7 +235,7 @@ The client has disconnected from Live.
 ```
 
 
-###error
+### error
 The client has encoutered an error.
 
 All errorObjects will have a `type`, one of:
@@ -262,7 +262,7 @@ errorObjects may also contain a `data` property. This is the data that was being
 ```
 
 
-###beatOn
+### beatOn
 The client recieved a signal that it can start sending real time beats for live to use in BPM calculations. Use .beat() to respond.  *Note* The AutoBPM feature of the Live software only works on a PC.
 
 ```js
@@ -271,7 +271,7 @@ The client recieved a signal that it can start sending real time beats for live 
 ```
 
 
-###beatOff
+### beatOff
 The client recieved a signal that it should stop sending real time beats.  *Note* The AutoBPM feature of the Live software only works on a PC.
 
 ```js
@@ -280,7 +280,7 @@ The client recieved a signal that it should stop sending real time beats.  *Note
 ```
 
 
-###bpm
+### bpm
 The client recieved a request for the current BPM.  Use .bpm(Number) to respond.
 
 ```js
@@ -289,7 +289,7 @@ The client recieved a request for the current BPM.  Use .bpm(Number) to respond.
 ```
 
 
-###buttonList
+### buttonList
 The client recieved a response to calling .buttonList() containing the Live button and master faders list.
 
 ```js
@@ -341,7 +341,7 @@ The client recieved a response to calling .buttonList() containing the Live butt
 ```
 
 
-###buttonPress
+### buttonPress
 A button was pressed
 
 ```js
@@ -351,7 +351,7 @@ A button was pressed
 ```
 
 
-###buttonRelease
+### buttonRelease
 A button was released
 
 ```js
@@ -361,7 +361,7 @@ A button was released
 ```
 
 
-###faderChange
+### faderChange
 A fader was moved in value. *Note* The Live App sends The fader's index, NOT the name.
 
 ```js
@@ -375,7 +375,7 @@ A fader was moved in value. *Note* The Live App sends The fader's index, NOT the
 ```
 		
 
-###interfaceChange
+### interfaceChange
 The interface has changed in the Live software - generally a hint to call .buttonList()
 
 ```js
@@ -384,7 +384,7 @@ The interface has changed in the Live software - generally a hint to call .butto
 ```
 
 
-###unknownEvent
+### unknownEvent
 The client encountered a socketMessage it was unable to parse.  Could potentially occur if Live is upated and the client library has yet to be updated to support new events.  Allows for parsing the message manually.
 
 ```js
