@@ -4,6 +4,8 @@ A node.js client library for communicating with The Lighting Controller software
 
 This was created using The Lighting Controller's publicly documented [Protocol Definition](http://download.thelightingcontroller.com/software/External_Application/Protocol.pdf).
 
+A blog post about the overall features can be found on the [Tidwell Productions Blog](http://tidwellproductions.com/blog/the-lighting-controller-client-node-js)
+
 
 1. [Install](#install)
 2. [Example](#example)
